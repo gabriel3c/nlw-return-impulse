@@ -18,10 +18,14 @@ routes.post('/feedbacks', async (req, res) => {
 
   const submitFeedbackUseCase = new SubmitFeedbackUseCase(prismaFeedbacksRepository, nodeMailAdapter)
 
-  await submitFeedbackUseCase.execute({
-    type, comment, screenshot
-  })
-
+  try {
+    await submitFeedbackUseCase.execute({
+      type, comment, screenshot
+    })
+    await console.log(screenshot)
+  } catch (error) {
+    console.log('deu xabu: ', error)
+  }
 
   return res.status(201).send()
 })
